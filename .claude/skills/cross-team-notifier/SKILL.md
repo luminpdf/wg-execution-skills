@@ -141,7 +141,7 @@ Here's the release notice for {experiment_name}:
 
 ---
 
-Ready to send to #vn-web-growth-releases?
+Ready to send to #vn-web-growth-heads-up?
 Anything you'd like to adjust before sending?
 ```
 
@@ -151,7 +151,7 @@ Wait for confirmation or edits before posting.
 
 After user confirms:
 
-1. Post the message to `#vn-web-growth-releases` using Slack MCP `slack_send_message`.
+1. Post the message to `#vn-web-growth-heads-up` using Slack MCP `slack_send_message`.
 2. Capture the Slack message permalink/URL.
 3. Write the Slack message URL back to the `Notification Link` property on the Notion experiment page using `notion-update-page`.
 
@@ -170,7 +170,7 @@ This prevents duplicate notifications — if `Notification Link` is already set,
 
 ## Delivery
 
-**Manual trigger with Slack posting.** The PO runs the skill, reviews the generated message, confirms, and the skill posts directly to `#vn-web-growth-releases` via Slack MCP. Automated cron-based triggering (Phase B) will be enabled after manual testing validates the flow.
+**Manual trigger with Slack posting.** The PO runs the skill, reviews the generated message, confirms, and the skill posts directly to `#vn-web-growth-heads-up` via Slack MCP. Automated cron-based triggering (Phase B) will be enabled after manual testing validates the flow.
 
 ## Notes
 
