@@ -49,7 +49,8 @@ Before generating the notification, verify the three items from the Linear ticke
 Read the `Affected Teams` multi-select property from the experiment.
 - **If empty (not set):** STOP. Warn the user:
   > "Affected Teams" is not set on this experiment. This is required before sending a cross-team notification. Please set it on the Notion experiment page (options: None, PDF, AG, Sign, Experience, Core) and try again.
-- **If set to "None":** Proceed, but skip @-mentions in the notification (broadcast only).
+- **If set to "None":** STOP. Do not generate or post a notification. Inform the user:
+  > "Affected Teams" is set to "None" on this experiment — no cross-team notification is needed. Skipping the message. If teams should actually be notified, update the `Affected Teams` property on the Notion experiment page and try again.
 - **If set to one or more teams:** Proceed with targeted @-mentions.
 
 **Growthbook link and Loom record (soft checks):**
@@ -93,7 +94,9 @@ The release date is not extracted from the brief — it is computed in Step 4. A
 
 ### Step 4: Generate the notification message
 
-Build the `mentions` string: if `affected_teams` contains actual team names (not "None"), format as space-separated @-mentions followed by team names in parentheses — e.g. `<@U123> <@U456> (PDF, Sign)`. If "None", omit the 👋 line entirely.
+By this point `affected_teams` is guaranteed to contain at least one real team name (the "None" and empty cases are stopped at the Step 2 gate).
+
+Build the `mentions` string: format the resolved Slack user IDs as space-separated @-mentions followed by team names in parentheses — e.g. `<@U123> <@U456> (PDF, Sign)`.
 
 Build the `growthbook_line`: if `growthbook_url` is available, include `• <{growthbook_url}|Growthbook experiment>`. If not found, omit this line.
 
@@ -166,7 +169,7 @@ This prevents duplicate notifications — if `Notification Link` is already set,
 | **Growthbook link included** | Non-WG engineers need this to see variant configs without asking |
 | **@-mentions from Affected Teams** | Targeted notification — only relevant people get pinged |
 | **Notification Link write-back** | Dedup mechanism — prevents duplicate sends on re-runs or cron |
-| **Affected Teams gate** | Required before notification — forces TL to think about cross-team impact during dev |
+| **Affected Teams gate (empty + "None" both stop)** | If no team is affected, no message is needed — broadcasting an empty FYI just creates noise in `#vn-web-growth-heads-up`. Forces TL to either pick real teams or explicitly opt out via "None" without spamming the channel. |
 
 ## Delivery
 
